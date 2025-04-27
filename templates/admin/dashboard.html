@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Citizen Grievance Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Total Grievances</h5>
+                <p class="display-4">{{ total_grievances }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100 border-warning">
+            <div class="card-body">
+                <h5 class="card-title">Pending</h5>
+                <p class="display-4 text-warning">{{ pending }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'admin_grievance_list' %}?status=pending" class="btn btn-sm btn-outline-warning">View All</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100 border-info">
+            <div class="card-body">
+                <h5 class="card-title">In Progress</h5>
+                <p class="display-4 text-info">{{ in_progress }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'admin_grievance_list' %}?status=in_progress" class="btn btn-sm btn-outline-info">View All</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100 border-success">
+            <div class="card-body">
+                <h5 class="card-title">Resolved</h5>
+                <p class="display-4 text-success">{{ resolved }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'admin_grievance_list' %}?status=resolved" class="btn btn-sm btn-outline-success">View All</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Admin Dashboard</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="{% url 'admin_grievance_list' %}" class="list-group-item list-group-item-action">
+                                View All Grievances
+                            </a>
+                            <a href="{% url 'admin_grievance_list' %}?status=pending" class="list-group-item list-group-item-action">
+                                View Pending Grievances
+                            </a>
+                            <a href="{% url 'admin_grievance_list' %}?status=in_progress" class="list-group-item list-group-item-action">
+                                View In-Progress Grievances
+                            </a>
+                            <a href="/admin/" class="list-group-item list-group-item-action">
+                                Django Admin Panel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recent Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- This would be populated with actual data in a real implementation -->
+                        <p>This section would show recent grievance submissions and status changes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

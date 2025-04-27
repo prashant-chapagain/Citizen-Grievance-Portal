@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Welcome to the Citizen Grievance Portal</h1>
+    <p class="lead">A platform for citizens to submit and track their grievances with government departments.</p>
+    <hr class="my-4">
+    <p>Submit your grievances, track their status, and get timely responses from concerned departments.</p>
+    {% if user.is_authenticated %}
+        <a class="btn btn-primary btn-lg" href="{% url 'submit_grievance' %}">Submit a Grievance</a>
+        <a class="btn btn-outline-primary btn-lg ms-2" href="{% url 'my_grievances' %}">View My Grievances</a>
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Register</a>
+        <a class="btn btn-outline-primary btn-lg ms-2" href="{% url 'login' %}">Login</a>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h3 class="card-title">Submit</h3>
+                <p class="card-text">Submit your grievance with all relevant details and supporting documents.</p>
+                <i class="bi bi-file-earmark-text display-4 text-primary"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h3 class="card-title">Track</h3>
+                <p class="card-text">Track the status of your grievance using the reference ID provided.</p>
+                <i class="bi bi-search display-4 text-primary"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h3 class="card-title">Resolve</h3>
+                <p class="card-text">Get timely responses and resolution from concerned departments.</p>
+                <i class="bi bi-check-circle display-4 text-primary"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mt-5 mb-4">Departments</h2>
+<div class="row">
+    {% for department in departments %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ department.name }}</h5>
+                    <p class="card-text">{{ department.description }}</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'submit_grievance' %}" class="btn btn-sm btn-outline-primary">Submit Grievance</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary">Login to Submit</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No departments available at the moment.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

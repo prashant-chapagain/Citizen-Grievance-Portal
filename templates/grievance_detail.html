@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Grievance Details - Citizen Grievance Portal{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Grievance Details</h4>
+        <a href="{% url 'my_grievances' %}" class="btn btn-light btn-sm">Back to My Grievances</a>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>Reference ID: {{ grievance.reference_id }}</h5>
+                <p class="mb-1"><strong>Status:</strong> <span class="badge status-{{ grievance.status }}">{{ grievance.get_status_display }}</span></p>
+                <p class="mb-1"><strong>Submitted On:</strong> {{ grievance.created_at|date:"F d, Y H:i" }}</p>
+                <p class="mb-1"><strong>Last Updated:</strong> {{ grievance.updated_at|date:"F d, Y H:i" }}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="mb-1"><strong>Category:</strong> {{ grievance.category.name }}</p>
+                <p class="mb-1"><strong>Department:</strong> {{ grievance.category.department.name }}</p>
+                {% if grievance.attachment %}
+                    <p class="mb-1">
+                        <strong>Attachment:</strong> 
+                        <a href="{{ grievance.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            View Attachment
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">{{ grievance.title }}</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ grievance.description|linebreaks }}</p>
+            </div>
+        </div>
+        
+        <h5 class="mb-3">Responses</h5>
+        {% if responses %}
+            <div class="timeline">
+                {% for response in responses %}
+                    <div class="card mb-3 {% if response.responder.is_staff %}border-primary{% endif %}">
+                        <div class="card-header {% if response.responder.is_staff %}bg-primary text-white{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ response.responder.get_full_name }}</strong>
+                                    {% if response.responder.is_staff %}
+                                        <span class="badge bg-light text-dark ms-2">Staff</span>
+                                    {% endif %}
+                                </div>
+                                <small>{{ response.created_at|date:"F d, Y H:i" }}</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ response.response|linebreaks }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">No responses yet.</div>
+        {% endif %}
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Add Response</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.response.errors }}
+                        <textarea name="{{ form.response.name }}" id="{{ form.response.id_for_label }}" class="form-control {% if form.response.errors %}is-invalid{% endif %}" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Response</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

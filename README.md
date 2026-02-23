@@ -1,4 +1,8 @@
-Clone the project \n
-Create Virtual environment (python -m venv .env) \n
-Install django (pip install django) \n
-to run: (python manage.py runserver) \n
+1: Clone the project 
+
+2: Create Virtual environment (python -m venv .env) 
+
+3: Install django (pip install django) 
+
+4: to run: (python manage.py runserver) 
+
